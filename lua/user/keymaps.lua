@@ -27,10 +27,11 @@ keymap("n", "<C-Up>", ":resize -2<CR>", opts)
 keymap("n", "<C-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-s>", ":w!<cr>")
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
@@ -64,9 +65,13 @@ keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 -- Git
 keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
--- Comment
-keymap("n", "<leader>/", "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", opts)
-keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>')
+---- Comment
+-- keymap("n", "<leader>/", "<cmd>lua require('mini.comment').toggle_current_linewise()<CR>", opts)
+keymap("x", "<leader>/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]]
+  , opts)
+-- miniature.nvim/lua/miniature/which-key.lua:  ["/"] = { "<cmd>lua require('mini.comment').toggle_lines(vim.fn.line('.'), vim.fn.line('.'))<cr>", "Toggle Comments" },
+-- keymap("x", "/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]], opts)
+
 
 -- DAP
 keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
@@ -78,3 +83,19 @@ keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
 keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
 keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
+
+for i = 1, 9 do
+  local key = string.format("<A-%s>", i)
+  local value = string.format(":BufferLineGoToBuffer %s<CR>", i)
+  keymap("n", key, value)
+end
+vim.cmd [[
+  set nofoldenable
+]]
+vim.api.nvim_create_autocmd("BufNewFile", {
+  desc = "make a go test",
+  -- group = "packer_conf",
+  pattern = "*_test.go",
+  command = "0r ~/workspaces/code-templates/test.go",
+  -- { "BufNewFile", "*_test.go", "0r ~/workspaces/code-templates/test.go" },
+})

@@ -36,30 +36,88 @@ packer.init {
       return require("packer.util").float { border = "rounded" }
     end,
   },
+  git = {
+    cmd = 'git', -- The base command for git operations
+    subcommands = { -- Format strings for git subcommands
+      update         = 'pull --ff-only --progress --rebase=false',
+      install        = 'clone --depth %i --no-single-branch --progress',
+      -- install        = 'clone --depth 1 --no-single-branch --progress',
+      --    fetch          = 'fetch --depth 999999 --progress',
+      fetch          = 'fetch --depth 10 --progress',
+      checkout       = 'checkout %s --',
+      update_branch  = 'merge --ff-only @{u}',
+      current_branch = 'branch --show-current',
+      diff           = 'log --color=never --pretty=format:FMT --no-show-signature HEAD@{1}...HEAD',
+      diff_fmt       = '%%h %%s (%%cr)',
+      get_rev        = 'rev-parse --short HEAD',
+      get_msg        = 'log --color=never --pretty=format:FMT --no-show-signature HEAD -n 1',
+      submodules     = 'submodule update --init --recursive --progress'
+    },
+    depth = 1, -- Git clone depth
+    clone_timeout = 60, -- Timeout, in seconds, for git clones
+    default_url_format = 'https://github.com/%s' -- Lua format string used for "aaa/bbb" style plugins
+    -- default_url_format = 'https://gitclone.com/github.com/%s' -- Lua format string used for "aaa/bbb" style plugins
+  },
 }
 
 -- Install your plugins here
 return packer.startup(function(use)
   -- My plugins here
+  use { 'echasnovski/mini.nvim', branch = 'stable',
+    config = function()
+      require("mini.comment").setup()
+      require("mini.starter").setup({ header = [[
+                               __
+  ___     ___    ___   __  __ /\_\    ___ ___
+ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\
+/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \
+\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\
+ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]]
+      })
+      -- require("mini.starter").setup()
+      require("mini.pairs").setup()
+      require("mini.statusline").setup()
+      require("mini.jump2d").setup({
+        -- mappings = {
+        --   start_jumping = 'f',
+        -- },
+      })
+      vim.api.nvim_set_keymap("n", "f",
+        ":lua MiniJump2d.start(MiniJump2d.builtin_opts.word_start)<cr>", { silent = true })
+
+      require("mini.indentscope").setup()
+      -- require("mini.tabline").setup()
+    end
+  }
+
   use { "wbthomason/packer.nvim", commit = "00ec5adef58c5ff9a07f11f45903b9dbbaa1b422" } -- Have packer manage itself
   use { "nvim-lua/plenary.nvim", commit = "968a4b9afec0c633bc369662e78f8c5db0eba249" } -- Useful lua functions used by lots of plugins
-  use { "windwp/nvim-autopairs", commit = "fa6876f832ea1b71801c4e481d8feca9a36215ec" } -- Autopairs, integrates with both cmp and treesitter
-  use { "numToStr/Comment.nvim", commit = "2c26a00f32b190390b664e56e32fd5347613b9e2" }
-  use { "JoosepAlviste/nvim-ts-context-commentstring", commit = "88343753dbe81c227a1c1fd2c8d764afb8d36269" }
+  -- use { "windwp/nvim-autopairs", commit = "fa6876f832ea1b71801c4e481d8feca9a36215ec" } -- Autopairs, integrates with both cmp and treesitter
+  -- use { "numToStr/Comment.nvim", commit = "2c26a00f32b190390b664e56e32fd5347613b9e2" }
+  -- use { "JoosepAlviste/nvim-ts-context-commentstring", commit = "88343753dbe81c227a1c1fd2c8d764afb8d36269" }
   use { "kyazdani42/nvim-web-devicons", commit = "8d2c5337f0a2d0a17de8e751876eeb192b32310e" }
   use { "kyazdani42/nvim-tree.lua", commit = "bdb6d4a25410da35bbf7ce0dbdaa8d60432bc243" }
   use { "akinsho/bufferline.nvim", commit = "c78b3ecf9539a719828bca82fc7ddb9b3ba0c353" }
-  use { "moll/vim-bbye", commit = "25ef93ac5a87526111f43e5110675032dbcacf56" }
-  use { "nvim-lualine/lualine.nvim", commit = "3362b28f917acc37538b1047f187ff1b5645ecdd" }
+  -- use { "moll/vim-bbye", commit = "25ef93ac5a87526111f43e5110675032dbcacf56" }
+  -- use { "nvim-lualine/lualine.nvim", commit = "3362b28f917acc37538b1047f187ff1b5645ecdd" }
   use { "akinsho/toggleterm.nvim", commit = "aaeed9e02167c5e8f00f25156895a6fd95403af8" }
   use { "ahmedkhalf/project.nvim", commit = "541115e762764bc44d7d3bf501b6e367842d3d4f" }
   use { "lewis6991/impatient.nvim", commit = "969f2c5c90457612c09cf2a13fee1adaa986d350" }
-  use { "lukas-reineke/indent-blankline.nvim", commit = "6177a59552e35dfb69e1493fd68194e673dc3ee2" }
-  use { "goolord/alpha-nvim", commit = "ef27a59e5b4d7b1c2fe1950da3fe5b1c5f3b4c94" }
+  -- use { "lukas-reineke/indent-blankline.nvim", commit = "6177a59552e35dfb69e1493fd68194e673dc3ee2" }
+  -- use { "goolord/alpha-nvim", commit = "ef27a59e5b4d7b1c2fe1950da3fe5b1c5f3b4c94" }
 
   -- Colorschemes
-  use { "folke/tokyonight.nvim", commit = "8223c970677e4d88c9b6b6d81bda23daf11062bb" }
-  use { "lunarvim/darkplus.nvim", commit = "2584cdeefc078351a79073322eb7f14d7fbb1835" }
+  -- use { "folke/tokyonight.nvim", commit = "8223c970677e4d88c9b6b6d81bda23daf11062bb" }
+  -- use { "lunarvim/darkplus.nvim", commit = "2584cdeefc078351a79073322eb7f14d7fbb1835" }
+  use { 'navarasu/onedark.nvim',
+    config = function()
+      require('onedark').setup {
+        -- style = 'light',
+        -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+        toggle_style_list = { 'dark', 'light' }, -- List of styles to toggle between
+      }
+    end,
+  }
 
   -- cmp plugins
   use { "hrsh7th/nvim-cmp", commit = "df6734aa018d6feb4d76ba6bda94b1aeac2b378a" } -- The completion plugin
@@ -95,6 +153,90 @@ return packer.startup(function(use)
   use { "mfussenegger/nvim-dap", commit = "014ebd53612cfd42ac8c131e6cec7c194572f21d" }
   use { "rcarriga/nvim-dap-ui", commit = "d76d6594374fb54abf2d94d6a320f3fd6e9bb2f7" }
   use { "ravenxrz/DAPInstall.nvim", commit = "8798b4c36d33723e7bba6ed6e2c202f84bb300de" }
+
+  use { "folke/which-key.nvim", }
+  use {
+    "preservim/vim-markdown",
+    ft = "markdown",
+    config = function()
+      vim.g.vim_markdown_auto_insert_bullets = 1
+      vim.g.vim_markdown_new_list_item_indent = 1
+    end,
+  }
+  use {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G",
+      "Git",
+      "Gdiffsplit",
+      "Gread",
+      "Gwrite",
+      "Ggrep",
+      "GMove",
+      "GDelete",
+      "GBrowse",
+      "GRemove",
+      "GRename",
+      "Glgrep",
+      "Gedit"
+    },
+    ft = { "fugitive" }
+  }
+  use {
+    "wsdjeg/vim-nim",
+    ft = "nim",
+    config = function()
+      vim.g.nvim_nim_enable_default_binds = 0
+      local opts = { cmd = {
+        "nimlsp",
+        "/data/work/projects/nim-src/",
+      } }
+      -- local opts = {cmd={
+      --     "/dev/shm/temp-workspaces/langserver/nimls",
+      --   }}
+      require("lspconfig")["nimls"].setup(opts)
+      vim.api.nvim_set_keymap("n", "gd", ":lua vim.lsp.buf.definition()<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "gr", ":lua vim.lsp.buf.references()<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "K", ":lua vim.lsp.buf.hover()<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<cr>", { silent = true })
+      -- vim.api.nvim_set_keymap("n", "gr", ":Telescope lsp_references<cr>", { silent = true })
+    end,
+  }
+  -- use {
+  --   "phaazon/hop.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("hop").setup()
+  --     vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+  --     vim.api.nvim_set_keymap("n", "f", ":HopWord<cr>", { silent = true })
+  --   end,
+  -- }
+  use {
+    "muxueqz/previm",
+    require = { "folke/which-key.nvim", },
+    ft = "markdown",
+    config = function()
+      vim.g.previm_open_cmd = 'xdg-open'
+      vim.g.previm_custom_preview_base_dir = '/dev/shm/previm_cache/'
+      -- vim.api.nvim_set_keymap("n", "<Space>mp", ":PrevimOpen<cr>", { silent = true })
+      -- vim.keymap.set("n", "<leader>mp", ":PrevimOpen<cr>", { silent = true })
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>lp"] = { "<cmd>PrevimOpen<cr>", "Preview markdown" },
+      })
+      -- vim.keymap.set("n", "<leader>Tm", "<cmd>PrevimOpen<cr>", { silent = true })
+      --     -- vim.cmd [[
+      --     --   nmap <Space>mp <Plug>MarkdownPreview
+      --     -- ]]
+    end,
+  }
+  -- use {
+  --   "folke/trouble.nvim",
+  --   cmd = "TroubleToggle",
+  --   -- config = function()
+  --   --   require("miniature.diag")
+  --   -- end
+  -- }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

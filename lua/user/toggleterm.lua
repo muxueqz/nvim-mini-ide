@@ -38,3 +38,9 @@ function _LAZYGIT_TOGGLE()
 	lazygit:toggle()
 end
 
+local gitui = Terminal:new({ cmd = "gitui", hidden = true })
+
+function _GITUI_TOGGLE()
+	gitui:toggle()
+end
+
