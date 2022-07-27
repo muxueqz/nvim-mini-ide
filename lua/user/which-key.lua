@@ -222,6 +222,7 @@ local mappings = {
     r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
     s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
     t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+    T = { "<cmd>lua require('dap-go').debug_test()<cr>", "Run This Test" },
     x = { "<cmd>lua require'dap'.terminate()<cr>", "Terminate" },
     u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
   },
@@ -240,3 +241,11 @@ local mappings = {
 
 which_key.setup(setup)
 which_key.register(mappings, opts)
+which_key.register({
+  ["<F5>"] = { "<cmd>lua require'dap'.continue()<cr>", "Continue" },
+  ["<F10>"] = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
+  ["<F11>"] = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
+
+  -- F23 = Shift + F11
+  ["<F23>"] = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
+})
