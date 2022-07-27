@@ -72,18 +72,6 @@ keymap("x", "<leader>/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vi
 -- miniature.nvim/lua/miniature/which-key.lua:  ["/"] = { "<cmd>lua require('mini.comment').toggle_lines(vim.fn.line('.'), vim.fn.line('.'))<cr>", "Toggle Comments" },
 -- keymap("x", "/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]], opts)
 
-
--- DAP
-keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
-keymap("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", opts)
-keymap("n", "<leader>di", "<cmd>lua require'dap'.step_into()<cr>", opts)
-keymap("n", "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", opts)
-keymap("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<cr>", opts)
-keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
-keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
-keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
-keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
-
 for i = 1, 9 do
   local key = string.format("<A-%s>", i)
   local value = string.format(":BufferLineGoToBuffer %s<CR>", i)
