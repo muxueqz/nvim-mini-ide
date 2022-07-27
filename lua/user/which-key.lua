@@ -150,10 +150,10 @@ local mappings = {
       "<cmd>Gitsigns diffthis HEAD<cr>",
       "Diff",
     },
-    m = { "<cmd>:Git commit %<cr>" , "Commit" },
-    L = { "<cmd>:Git log --full-history %<cr>" , "Log" },
---
--- config.mappings.n["<Leader>gg"] = { function() astronvim.toggle_term_cmd "gitui" end, desc = "ToggleTerm gitui" }
+    m = { "<cmd>:Git commit %<cr>", "Commit" },
+    L = { "<cmd>:Git log --full-history %<cr>", "Log" },
+    --
+    -- config.mappings.n["<Leader>gg"] = { function() astronvim.toggle_term_cmd "gitui" end, desc = "ToggleTerm gitui" }
   },
 
   l = {
@@ -169,7 +169,7 @@ local mappings = {
     },
     f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
     i = { "<cmd>LspInfo<cr>", "Info" },
-    I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
+    I = { "<cmd>Mason<cr>", "Installer Info" },
     j = {
       "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>",
       "Next Diagnostic",
@@ -201,6 +201,41 @@ local mappings = {
     s = { "<cmd>split<cr>", "Split" },
     v = { "<cmd>vsplit<cr>", "VSplit" },
   },
+  -- DAP
+  d = {
+    name = "Debug",
+    R = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run to Cursor" },
+    E = { "<cmd>lua require'dapui'.eval(vim.fn.input '[Expression] > ')<cr>", "Evaluate Input" },
+    C = { "<cmd>lua require'dap'.set_breakpoint(vim.fn.input '[Condition] > ')<cr>", "Conditional Breakpoint" },
+    U = { "<cmd>lua require'dapui'.toggle()<cr>", "Toggle UI" },
+    b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
+    c = { "<cmd>lua require'dap'.continue()<cr>", "Continue" },
+    d = { "<cmd>lua require'dap'.disconnect()<cr>", "Disconnect" },
+    e = { "<cmd>lua require'dapui'.eval()<cr>", "Evaluate" },
+    g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
+    h = { "<cmd>lua require'dap.ui.widgets'.hover()<cr>", "Hover Variables" },
+    S = { "<cmd>lua require'dap.ui.widgets'.scopes()<cr>", "Scopes" },
+    i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
+    o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
+    p = { "<cmd>lua require'dap'.pause.toggle()<cr>", "Pause" },
+    q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
+    r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
+    s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
+    t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+    x = { "<cmd>lua require'dap'.terminate()<cr>", "Terminate" },
+    u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
+  },
+
+
+  -- keymap("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", opts)
+  -- keymap("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>", opts)
+  -- keymap("n", "<leader>di", "<cmd>lua require'dap'.step_into()<cr>", opts)
+  -- keymap("n", "<leader>do", "<cmd>lua require'dap'.step_over()<cr>", opts)
+  -- keymap("n", "<leader>dO", "<cmd>lua require'dap'.step_out()<cr>", opts)
+  -- keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
+  -- keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
+  -- keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
+  -- keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
 }
 
 which_key.setup(setup)
