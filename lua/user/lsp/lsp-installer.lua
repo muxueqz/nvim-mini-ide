@@ -1,25 +1,19 @@
-local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+local status_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not status_ok then
   return
 end
 
-local opts = {}
 
-lsp_installer.on_server_ready(function(server)
-  opts = {
-    on_attach = require("user.lsp.handlers").on_attach,
-    capabilities = require("user.lsp.handlers").capabilities,
+mason_lspconfig.setup({
+  ensure_installed = {
+    "sumneko_lua",
   }
-
-  if server == "sumneko_lua" then
-    local sumneko_opts = require "user.lsp.settings.sumneko_lua"
-    opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
+})
+mason_lspconfig.setup_handlers({
+  function(server_name)
+    require("lspconfig")[server_name].setup {
+      on_attach = require("user.lsp.handlers").on_attach,
+      capabilities = require("user.lsp.handlers").capabilities,
+    }
   end
-
-  if server == "pyright" then
-    local pyright_opts = require "user.lsp.settings.pyright"
-    opts = vim.tbl_deep_extend("force", pyright_opts, opts)
-  end
-
-  server:setup(opts)
-end)
+})
