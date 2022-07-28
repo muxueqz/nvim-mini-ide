@@ -156,26 +156,13 @@ return packer.startup(function(use)
     },
     ft = { "fugitive" }
   }
-  use {
-    "wsdjeg/vim-nim",
-    ft = "nim",
-    config = function()
-      vim.g.nvim_nim_enable_default_binds = 0
-      local opts = { cmd = {
-        "nimlsp",
-        "/data/work/projects/nim-src/",
-      } }
-      -- local opts = {cmd={
-      --     "/dev/shm/temp-workspaces/langserver/nimls",
-      --   }}
-      require("lspconfig")["nimls"].setup(opts)
-      vim.api.nvim_set_keymap("n", "gd", ":lua vim.lsp.buf.definition()<cr>", { silent = true })
-      vim.api.nvim_set_keymap("n", "gr", ":lua vim.lsp.buf.references()<cr>", { silent = true })
-      vim.api.nvim_set_keymap("n", "K", ":lua vim.lsp.buf.hover()<cr>", { silent = true })
-      vim.api.nvim_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<cr>", { silent = true })
-      -- vim.api.nvim_set_keymap("n", "gr", ":Telescope lsp_references<cr>", { silent = true })
-    end,
-  }
+  -- use {
+  --   "wsdjeg/vim-nim",
+  --   ft = "nim",
+  -- }
+
+  use { 'zah/nim.vim' }
+  -- use { 'alaviss/nim.nvim' }
   -- use {
   --   "phaazon/hop.nvim",
   --   event = "BufRead",
