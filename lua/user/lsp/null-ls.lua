@@ -20,7 +20,12 @@ null_ls.setup {
     formatting.black.with { extra_args = { "--fast" } },
     -- formatting.black,
     -- formatting.stylua,
+    -- formatting.sql_formatter,
+    formatting.sqlformat.with {
+      extra_args = { "-a" },
+    },
     formatting.google_java_format,
+    formatting.shfmt,
     -- diagnostics.flake8,
   },
 }
