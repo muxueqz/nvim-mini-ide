@@ -126,6 +126,8 @@ return packer.startup(function(use)
   -- use { "mfussenegger/nvim-dap", commit = "014ebd53612cfd42ac8c131e6cec7c194572f21d" }
   use { "mfussenegger/nvim-dap", }
   use { "leoluz/nvim-dap-go", }
+  use { "olexsmir/gopher.nvim", }
+  use { 'mfussenegger/nvim-dap-python' }
   use { "rcarriga/nvim-dap-ui", commit = "d76d6594374fb54abf2d94d6a320f3fd6e9bb2f7" }
 
   use { "folke/which-key.nvim", }

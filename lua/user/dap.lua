@@ -90,5 +90,6 @@ end
 --   }
 -- }
 require('dap-go').setup()
+require('dap-python').setup()
 
 require('dap.ext.vscode').load_launchjs()
