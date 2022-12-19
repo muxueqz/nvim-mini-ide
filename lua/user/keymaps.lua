@@ -87,3 +87,9 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   command = "0r ~/workspaces/code-templates/test.go",
   -- { "BufNewFile", "*_test.go", "0r ~/workspaces/code-templates/test.go" },
 })
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  pattern = "go.mod",
+  callback = function()
+    vim.cmd "set ft=go"
+  end,
+})
