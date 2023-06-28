@@ -68,9 +68,22 @@ keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 ---- Comment
 -- keymap("n", "<leader>/", "<cmd>lua require('mini.comment').toggle_current_linewise()<CR>", opts)
 keymap("x", "<leader>/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]]
-  , opts)
+, opts)
 -- miniature.nvim/lua/miniature/which-key.lua:  ["/"] = { "<cmd>lua require('mini.comment').toggle_lines(vim.fn.line('.'), vim.fn.line('.'))<cr>", "Toggle Comments" },
 -- keymap("x", "/", [[<esc><cmd>lua require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]], opts)
+
+function GofmtSelected(start_line, end_line)
+  if vim.bo.filetype ~= 'go' then
+    vim.api.nvim_echo('Current buffer is not a Go source file', true, {})
+    return
+  end
+  local input = table.concat(vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false), "\n")
+  local fmtted = vim.fn.system({ 'gofmt' }, input)
+  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, true, vim.split(fmtted, '\n'))
+end
+
+keymap("v", "<leader>lf", [[<esc><cmd>lua GofmtSelected(vim.fn.line("'<"), vim.fn.line("'>"))<cr>]],
+  { desc = 'Range Format' })
 
 for i = 1, 9 do
   local key = string.format("<A-%s>", i)
