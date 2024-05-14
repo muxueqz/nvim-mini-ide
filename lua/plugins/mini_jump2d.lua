@@ -2,6 +2,9 @@ return {
   "echasnovski/mini.jump2d",
   version = "*",
   event = "VeryLazy",
+  dependencies = {
+    "folke/flash.nvim",
+  },
   config = function()
     require("mini.jump2d").setup({
       -- spotter = MiniJump2d.gen_pattern_spotter("[，？；。！：、《》（）%p]"),
